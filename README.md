@@ -2,6 +2,19 @@
 
 It can either always respond with JSON or only intercept requests on a given path when passthrough is enabled.
 
+## Configuration
+```yaml
+http:
+  middlewares:
+    epoch-middleware:
+      plugin:
+        epoch:
+          passthrough: false
+          matchPath: /epoch
+          keyName: epoch
+          format: epoch # epoch | epoch_s | epoch_ns | rfc3339 | all
+```
+
 ## Example Responses
 
 **Milliseconds (default):**
