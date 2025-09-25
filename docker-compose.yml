@@ -1,0 +1,30 @@
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--experimental.localplugins.epoch.moduleName=github.com/Papercast-Limited/epoch"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./plugins-local:/plugins-local"
+
+  whoami:
+    image: traefik/whoami
+    container_name: test-whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.test.rule=Path(`/epoch`)"
+      - "traefik.http.routers.test.entrypoints=web"
+      - "traefik.http.routers.test.middlewares=epoch-mw"
+      - "traefik.http.middlewares.epoch-mw.plugin.epoch.passthrough=true"
+      - "traefik.http.middlewares.epoch-mw.plugin.epoch.matchPath=/epoch"
+      - "traefik.http.middlewares.epoch-mw.plugin.epoch.keyName=epoch"
+      - "traefik.http.middlewares.epoch-mw.plugin.epoch.format=epoch"

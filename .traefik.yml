@@ -1,0 +1,13 @@
+displayName: epoch
+
+type: middleware
+
+import: github.com/Papercast-Limited/epoch
+
+summary: Responds with current epoch in various formats
+
+testData:
+  passthrough: false
+  matchPath: /epoch
+  keyName: epoch
+  format: epoch
